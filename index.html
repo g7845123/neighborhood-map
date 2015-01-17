@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <!-- config viewport for mobile device -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Neighborhood Map</title>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <script type="text/javascript" src="js/knockout-3.2.0.js"></script>
+  <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+  <script type="text/javascript" src="js/neighbor.js"></script>
+</head>
+<body>
+  <div id="map-canvas"></div>
+  <div class="neighbor-list-wrapper">
+    <div class="neighbor-list-title">
+      <div><img src="img/foursquare.ico">Search Neighbors</div>
+      <input class="search-bar" data-bind="value: centerText" />
+    </div> 
+    <!-- Show current loading status. Will disappear if neighbor places are successful loaded -->
+    <div class="status" data-bind="visible: !neighborPlaces().length, text: status"></div>
+    <!-- A list of neighbor places. Will be visible only if places are successful loaded -->
+    <!-- In devices of small screen width (600px), the list is not visible, leaving more space for the map -->
+    <div data-bind="if: neighborPlaces().length">
+      <ul class="neighbor-list" data-bind="foreach: neighborPlaces">
+        <li class="neighbor-list-item" data-bind="click: $parent.showInfowindow">
+          <div data-bind="text: name" class="neighbor-name"></div>
+          <div data-bind="text: category"></div>
+          <!-- Foursquare rating is not always returned. Do not show rating if no rating is available  -->
+          <div data-bind="if: rating">Rating: <span data-bind="text: rating"></span></div>
+          <div data-bind="text: address"></div>
+          <div data-bind="text: phone"></div>
+        </li>
+      </ul>
+    </div>
+    
+  </div>
+</body>
+</html>
